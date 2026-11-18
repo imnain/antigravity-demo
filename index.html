@@ -2,184 +2,1039 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Antigravity & GitHub Integration</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>For Bubu ❤️ | 12:00 AM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0d1117;
-      --card-bg: #161b22;
-      --border: #30363d;
-      --text: #e6edf3;
-      --text-muted: #8b949e;
-      --accent: #58a6ff;
-      --accent-glow: rgba(88, 166, 255, 0.2);
-      --success: #3fb950;
+      --bg-deep: #08050d;
+      --bg-mid: #140b21;
+      --card-bg: rgba(24, 15, 38, 0.78);
+      --card-border: rgba(255, 117, 151, 0.22);
+      --accent: #ff4d7d;
+      --accent-glow: rgba(255, 77, 125, 0.38);
+      --gold: #f7c873;
+      --gold-soft: rgba(247, 200, 115, 0.14);
+      --success: #3dd68c;
+      --text-main: #fcf7ff;
+      --text-soft: #d5c7e8;
+      --text-muted: #9a88b3;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at 50% 0%, #241138 0%, var(--bg-mid) 45%, var(--bg-deep) 100%);
+      color: var(--text-main);
       min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
-      padding: 24px;
+      align-items: center;
+      padding: 16px;
+      overflow-x: hidden;
+      position: relative;
     }
 
-    .container {
-      max-width: 680px;
+    /* Ambient Background Canvas */
+    #starsCanvas, #fxCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 40px;
-      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
-      text-align: center;
+      height: 100%;
+      pointer-events: none;
+    }
+    #starsCanvas { z-index: 0; }
+    #fxCanvas { z-index: 20; }
+
+    /* Ambient Glow Orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.45;
+    }
+    .orb-1 {
+      width: 280px;
+      height: 280px;
+      background: #ff3b72;
+      top: -60px;
+      right: -60px;
+    }
+    .orb-2 {
+      width: 260px;
+      height: 260px;
+      background: #7b2cbf;
+      bottom: -50px;
+      left: -60px;
     }
 
+    /* Main Shell */
+    .shell {
+      width: 100%;
+      max-width: 460px;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Inventory / Unlocked Memories Bar */
+    .inventory-bar {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 4px 2px;
+      scrollbar-width: none;
+      min-height: 32px;
+      align-items: center;
+    }
+    .inventory-bar::-webkit-scrollbar { display: none; }
+
+    .inv-pill {
+      flex-shrink: 0;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 5px 11px;
+      border-radius: 99px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(247, 200, 115, 0.3);
+      color: var(--gold);
+      backdrop-filter: blur(8px);
+      animation: popIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* Main Glass Card */
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      border-radius: 28px;
+      padding: 26px 22px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+
+    .fade-enter {
+      animation: cardFade 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    @keyframes cardFade {
+      from { opacity: 0; transform: translateY(14px) scale(0.985); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.75); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-9px); }
+      40% { transform: translateX(9px); }
+      60% { transform: translateX(-6px); }
+      80% { transform: translateX(6px); }
+    }
+
+    .shake { animation: shake 0.42s ease; }
+
+    /* Progress Bar */
+    .top-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 11.5px;
+      color: var(--text-muted);
+      font-weight: 600;
+      letter-spacing: 0.4px;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 99px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #ff4d7d, #ffb36b, #ff4d7d);
+      background-size: 200% 100%;
+      border-radius: 99px;
+      transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+      animation: shimmer 3s infinite linear;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+
+    /* Badges & Typography */
     .badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 6px 14px;
-      background: rgba(63, 185, 80, 0.15);
-      color: var(--success);
-      border: 1px solid rgba(63, 185, 80, 0.3);
-      border-radius: 999px;
-      font-size: 0.875rem;
-      font-weight: 500;
-      margin-bottom: 20px;
-    }
-
-    .badge-dot {
-      width: 8px;
-      height: 8px;
-      background: var(--success);
-      border-radius: 50%;
-      box-shadow: 0 0 8px var(--success);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(255, 77, 125, 0.14);
+      border: 1px solid rgba(255, 77, 125, 0.3);
+      padding: 5px 12px;
+      border-radius: 99px;
+      margin-bottom: 14px;
     }
 
     h1 {
-      font-size: 2.25rem;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 30px;
       font-weight: 700;
-      letter-spacing: -0.03em;
-      margin-bottom: 12px;
-      background: linear-gradient(135deg, #ffffff 40%, var(--accent));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      line-height: 1.18;
+      color: #ffffff;
+      margin-bottom: 14px;
+      letter-spacing: -0.2px;
     }
 
-    p.subtitle {
-      color: var(--text-muted);
-      font-size: 1.1rem;
-      line-height: 1.6;
-      margin-bottom: 32px;
+    .narrative {
+      font-size: 15px;
+      line-height: 1.68;
+      color: var(--text-soft);
+      margin-bottom: 18px;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 32px;
-      text-align: left;
+    .narrative strong, .narrative b {
+      color: #ffffff;
+      font-weight: 600;
     }
 
-    .card {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px;
+    .narrative em, .narrative i {
+      color: var(--gold);
+      font-style: italic;
     }
 
-    .card h3 {
-      font-size: 0.95rem;
-      color: var(--accent);
-      margin-bottom: 6px;
+    .prompt-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gold);
+      margin-bottom: 10px;
+      display: block;
     }
 
-    .card p {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      line-height: 1.4;
-    }
-
-    .interactive-box {
-      background: rgba(88, 166, 255, 0.08);
-      border: 1px dashed rgba(88, 166, 255, 0.4);
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 24px;
+    /* Interactive Buttons */
+    .btn-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
     button {
-      background: var(--accent);
-      color: #0d1117;
-      border: none;
-      padding: 10px 22px;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      font-weight: 600;
+      width: 100%;
+      padding: 15px 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.045);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 14.5px;
+      font-weight: 500;
+      line-height: 1.45;
+      text-align: left;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.22s ease;
+      position: relative;
     }
 
     button:hover {
+      background: rgba(255, 77, 125, 0.11);
+      border-color: rgba(255, 77, 125, 0.45);
       transform: translateY(-1px);
-      box-shadow: 0 4px 16px var(--accent-glow);
     }
 
-    footer {
-      font-size: 0.8rem;
-      color: var(--text-muted);
+    button:active {
+      transform: scale(0.985);
+    }
+
+    button.btn-primary {
+      background: linear-gradient(135deg, #ff4d7d 0%, #d92b60 100%);
+      border: 1px solid rgba(255, 182, 198, 0.35);
+      color: #ffffff;
+      font-weight: 700;
+      text-align: center;
+      font-size: 15px;
+      box-shadow: 0 10px 25px var(--accent-glow);
+      margin-top: 8px;
+    }
+
+    button.btn-primary:hover {
+      filter: brightness(1.08);
+    }
+
+    button.btn-secondary {
+      background: var(--gold-soft);
+      border: 1px solid rgba(247, 200, 115, 0.4);
+      color: var(--gold);
+      font-weight: 600;
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    button.correct-choice {
+      background: rgba(61, 214, 140, 0.14) !important;
+      border-color: var(--success) !important;
+      color: #e6fff2 !important;
+    }
+
+    button.wrong-choice {
+      background: rgba(255, 77, 125, 0.12);
+      border-color: rgba(255, 77, 125, 0.5);
+    }
+
+    /* Callouts & Feedback Boxes */
+    .feedback-box {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255, 77, 125, 0.1);
+      border: 1px solid rgba(255, 77, 125, 0.32);
+      font-size: 14px;
+      line-height: 1.58;
+      color: #ffe3ec;
+      display: none;
+      animation: cardFade 0.3s ease;
+    }
+
+    .feedback-box.gold {
+      background: rgba(247, 200, 115, 0.1);
+      border-color: rgba(247, 200, 115, 0.4);
+      color: #fff2d6;
+    }
+
+    .feedback-box.green {
+      background: rgba(61, 214, 140, 0.11);
+      border-color: rgba(61, 214, 140, 0.4);
+      color: #dcffec;
+    }
+
+    /* Ego Meter Specific */
+    .ego-widget {
+      background: rgba(10, 6, 18, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .ego-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12.5px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      color: #ffb36b;
+    }
+
+    .ego-track {
+      width: 100%;
+      height: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .ego-bar {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, #ff3b3b, #ff9900);
+      border-radius: 99px;
+      transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1), background 0.4s ease;
+    }
+
+    /* Chapter 6 Tap-to-Reveal Cards */
+    .memory-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .mem-card {
+      border-radius: 16px;
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px dashed rgba(247, 200, 115, 0.35);
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .mem-card.unlocked {
+      background: rgba(247, 200, 115, 0.09);
+      border: 1px solid rgba(247, 200, 115, 0.45);
+      cursor: default;
+    }
+
+    .mem-card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--gold);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .mem-card-body {
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: var(--text-soft);
+      margin-top: 8px;
+      display: none;
+    }
+
+    .mem-card.unlocked .mem-card-body {
+      display: block;
+      animation: cardFade 0.3s ease;
+    }
+
+    /* Final Letter Styling */
+    .letter-scroll {
+      background: linear-gradient(180deg, rgba(16, 10, 28, 0.85) 0%, rgba(26, 14, 42, 0.9) 100%);
+      border: 1px solid rgba(247, 200, 115, 0.35);
+      border-radius: 22px;
+      padding: 22px 18px;
+      max-height: 62vh;
+      overflow-y: auto;
+      box-shadow: inset 0 0 30px rgba(255, 77, 125, 0.08);
+      margin-bottom: 16px;
+    }
+
+    .letter-scroll::-webkit-scrollbar {
+      width: 5px;
+    }
+    .letter-scroll::-webkit-scrollbar-thumb {
+      background: rgba(255, 77, 125, 0.35);
+      border-radius: 99px;
+    }
+
+    .letter-scroll p {
+      font-size: 14.8px;
+      line-height: 1.76;
+      color: #f2eafc;
+      margin-bottom: 15px;
+    }
+
+    .letter-greeting {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 24px !important;
+      font-weight: 700;
+      color: var(--gold) !important;
+      margin-bottom: 16px !important;
+    }
+
+    .letter-signoff {
+      margin-top: 20px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .footer-actions {
+      display: flex;
+      gap: 10px;
+    }
+    .footer-actions button {
+      text-align: center;
+      font-size: 13.5px;
+      padding: 12px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="badge">
-      <span class="badge-dot"></span>
-      Live on GitHub Pages
-    </div>
-    <h1>Built with Antigravity</h1>
-    <p class="subtitle">
-      This page was automatically created, versioned with Git, and deployed to GitHub Pages via Google Antigravity.
-    </p>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <canvas id="starsCanvas"></canvas>
+  <canvas id="fxCanvas"></canvas>
 
-    <div class="grid">
-      <div class="card">
-        <h3>⚡ GitHub CLI Integration</h3>
-        <p>Authenticated and deployed straight through <code>gh</code> terminal automation.</p>
-      </div>
-      <div class="card">
-        <h3>🌐 Hosted on Pages</h3>
-        <p>Fast global CDN hosting with automated HTTPS and instant deployments.</p>
-      </div>
-    </div>
-
-    <div class="interactive-box">
-      <p style="margin-bottom: 12px; font-size: 0.95rem;">Test interactivity:</p>
-      <button id="counterBtn" onclick="increment()">Clicks: 0</button>
-    </div>
-
-    <footer>
-      Deployed by <strong>imnain</strong> &bull; Powered by Google Antigravity
-    </footer>
+  <div class="shell">
+    <div class="inventory-bar" id="inventoryBar"></div>
+    <div class="card fade-enter" id="card"></div>
   </div>
 
   <script>
-    let count = 0;
-    function increment() {
-      count++;
-      document.getElementById('counterBtn').innerText = `Clicks: ${count} 🚀`;
+    /* ==========================================
+       1. STARRY BACKGROUND ENGINE
+       ========================================== */
+    const starsCanvas = document.getElementById("starsCanvas");
+    const sCtx = starsCanvas.getContext("2d");
+    let stars = [];
+
+    function initStars() {
+      starsCanvas.width = window.innerWidth;
+      starsCanvas.height = window.innerHeight;
+      stars = Array.from({ length: 65 }, () => ({
+        x: Math.random() * starsCanvas.width,
+        y: Math.random() * starsCanvas.height,
+        r: Math.random() * 1.6 + 0.4,
+        alpha: Math.random(),
+        speed: Math.random() * 0.015 + 0.005
+      }));
     }
+
+    function drawStars() {
+      sCtx.clearRect(0, 0, starsCanvas.width, starsCanvas.height);
+      stars.forEach(s => {
+        s.alpha += s.speed;
+        if (s.alpha > 1 || s.alpha < 0.15) s.speed = -s.speed;
+        sCtx.beginPath();
+        sCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        sCtx.fillStyle = `rgba(255, 230, 245, ${Math.abs(s.alpha)})`;
+        sCtx.fill();
+      });
+      requestAnimationFrame(drawStars);
+    }
+    window.addEventListener("resize", initStars);
+    initStars();
+    drawStars();
+
+    /* ==========================================
+       2. CONFETTI & FLOATING HEARTS ENGINE
+       ========================================== */
+    const fxCanvas = document.getElementById("fxCanvas");
+    const fCtx = fxCanvas.getContext("2d");
+    let particles = [];
+    let fxRunning = false;
+
+    function launchCelebration() {
+      fxCanvas.width = window.innerWidth;
+      fxCanvas.height = window.innerHeight;
+      const colors = ["#ff4d7d", "#f7c873", "#ff8fab", "#ffffff", "#c77dff"];
+
+      for (let i = 0; i < 95; i++) {
+        particles.push({
+          x: Math.random() * fxCanvas.width,
+          y: Math.random() * fxCanvas.height - fxCanvas.height,
+          vx: (Math.random() - 0.5) * 2.5,
+          vy: Math.random() * 3.2 + 1.8,
+          size: Math.random() * 7 + 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          isHeart: Math.random() > 0.55,
+          rot: Math.random() * Math.PI
+        });
+      }
+      if (!fxRunning) {
+        fxRunning = true;
+        animateFx();
+      }
+    }
+
+    function drawHeart(ctx, x, y, size) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.beginPath();
+      ctx.moveTo(0, size / 4);
+      ctx.bezierCurveTo(0, 0, -size / 2, 0, -size / 2, size / 4);
+      ctx.bezierCurveTo(-size / 2, size / 2, 0, size * 0.75, 0, size);
+      ctx.bezierCurveTo(0, size * 0.75, size / 2, size / 2, size / 2, size / 4);
+      ctx.bezierCurveTo(size / 2, 0, 0, 0, 0, size / 4);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function animateFx() {
+      fCtx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
+      particles.forEach((p, idx) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        fCtx.fillStyle = p.color;
+        if (p.isHeart) {
+          drawHeart(fCtx, p.x, p.y, p.size * 1.3);
+        } else {
+          fCtx.beginPath();
+          fCtx.arc(p.x, p.y, p.size / 2, 0, Math.PI * 2);
+          fCtx.fill();
+        }
+        if (p.y > fxCanvas.height + 20) {
+          particles.splice(idx, 1);
+        }
+      });
+      if (particles.length > 0) {
+        requestAnimationFrame(animateFx);
+      } else {
+        fxRunning = false;
+        fCtx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
+      }
+    }
+
+    /* ==========================================
+       3. STORY STATE & INVENTORY ENGINE
+       ========================================== */
+    const card = document.getElementById("card");
+    const inventoryBar = document.getElementById("inventoryBar");
+    let step = 0;
+    const unlockedPills = [];
+
+    function unlockPill(text) {
+      if (!unlockedPills.includes(text)) {
+        unlockedPills.push(text);
+        const span = document.createElement("span");
+        span.className = "inv-pill";
+        span.innerText = text;
+        inventoryBar.appendChild(span);
+        inventoryBar.scrollLeft = inventoryBar.scrollWidth;
+      }
+    }
+
+    function shakeCard() {
+      card.classList.remove("shake");
+      void card.offsetWidth;
+      card.classList.add("shake");
+    }
+
+    function goNext(pillToUnlock) {
+      if (pillToUnlock) unlockPill(pillToUnlock);
+      step++;
+      card.classList.remove("fade-enter");
+      void card.offsetWidth;
+      card.classList.add("fade-enter");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      renderStep();
+    }
+
+    function renderHeader(badgeText, currentChap, totalChap = 7) {
+      const pct = Math.round((currentChap / totalChap) * 100);
+      return `
+        <div class="top-meta">
+          <span>FOR BUBU ❤️</span>
+          <span>${pct}% COMPLETED</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" style="width: ${pct}%"></div>
+        </div>
+        <div class="badge">${badgeText}</div>
+      `;
+    }
+
+    /* ==========================================
+       4. ALL 8 INTERACTIVE SCREENS
+       ========================================== */
+    function renderStep() {
+      // SCREEN 0: BOOT SCREEN
+      if (step === 0) {
+        card.innerHTML = `
+          ${renderHeader("🔒 SECURITY CHECK • 12:00 AM IST", 0)}
+          <h1>Hold on, Bubu. 🛑</h1>
+          <div class="narrative">
+            It’s officially your birthday. Before I let you unlock your midnight letter, the system needs to verify that it's actually you—and not an imposter pretending to be my favorite person.<br><br>
+            You have to survive <strong>7 chapters of our actual story</strong>—from 2024 office hallways to late-night Gurgaon food runs, bad movies, and our <em>ego pe ego</em> fights. Ready?
+          </div>
+          <div class="btn-list">
+            <button class="btn-primary" id="startBtn">I'm ready, Mannu. Let's go →</button>
+            <button id="attitudeBtn">Skip verification, I have attitude today 😤</button>
+          </div>
+          <div class="feedback-box" id="fb0"></div>
+        `;
+        document.getElementById("startBtn").onclick = () => goNext("🔐 Verified Bubu");
+        document.getElementById("attitudeBtn").onclick = () => {
+          shakeCard();
+          const fb = document.getElementById("fb0");
+          fb.style.display = "block";
+          fb.innerHTML = "Haha nice try, Bubu. Attitude is 100% allowed, but skipping is not! Tap the pink button above ❤️";
+        };
+      }
+
+      // CHAPTER 1: AMEX & LATE-NIGHT LUDO
+      else if (step === 1) {
+        card.innerHTML = `
+          ${renderHeader("CHAPTER 1 OF 7 • THE ORIGIN STORY", 1)}
+          <h1>2024 Colleagues to 13-Hour Marathons</h1>
+          <div class="narrative">
+            If someone had told us back in 2024 at the Amex office in Gurgaon that this colleague would become <em>this</em> important, we both would have laughed.<br><br>
+            Then came late 2025. By day, we walked around the office pretending to be strictly professional colleagues. By night, things looked very different. What was actually happening behind the scenes?
+          </div>
+          <div class="btn-list">
+            <button id="c1_wrong">We were super obvious at work and went to sleep at 9 PM every night.</button>
+            <button id="c1_right">13-hour text marathons, hours-long voice calls, and intense online Ludo matches.</button>
+          </div>
+          <div class="feedback-box" id="fb1"></div>
+          <div class="feedback-box gold" id="fb1_secret"></div>
+          <div id="c1_next"></div>
+        `;
+
+        const fb1 = document.getElementById("fb1");
+        const fbSecret = document.getElementById("fb1_secret");
+
+        document.getElementById("c1_wrong").onclick = (e) => {
+          e.target.classList.add("wrong-choice");
+          shakeCard();
+          fb1.className = "feedback-box";
+          fb1.style.display = "block";
+          fb1.innerHTML = "False! Nobody slept at 9 PM. We were busy destroying our sleep schedules for each other. Pick the other option!";
+        };
+
+        document.getElementById("c1_right").onclick = (e) => {
+          e.target.classList.add("correct-choice");
+          fb1.className = "feedback-box green";
+          fb1.style.display = "block";
+          fb1.innerHTML = `Spot on. Those 13-hour text marathons, endless late-night calls, and Ludo battles were where everything changed.<br><br>Wait—there's one more classified detail from the office...`;
+
+          if (!document.getElementById("revealSecretBtn")) {
+            const secBtn = document.createElement("button");
+            secBtn.id = "revealSecretBtn";
+            secBtn.className = "btn-secondary";
+            secBtn.innerText = "What happened when we tried hiding from people? 👀";
+            secBtn.onclick = () => {
+              secBtn.style.display = "none";
+              fbSecret.style.display = "block";
+              fbSecret.innerHTML = `<strong>🕵️‍♂️ Classified Memory Unlocked:</strong><br>We literally tried hiding from people together like undercover agents... and STILL managed to get caught together. 😂 Smooth, right?`;
+              const nxt = document.createElement("button");
+              nxt.className = "btn-primary";
+              nxt.innerText = "Next Chapter: Stepping Out →";
+              nxt.onclick = () => goNext("🎲 13h Texts & Ludo");
+              document.getElementById("c1_next").appendChild(nxt);
+            };
+            document.getElementById("c1_next").appendChild(secBtn);
+          }
+        };
+      }
+
+      // CHAPTER 2: CYBER HUB, SECTOR 17 & NOV 2025 SURPRISE
+      else if (step === 2) {
+        card.innerHTML = `
+          ${renderHeader("CHAPTER 2 OF 7 • GURGAON DIARIES", 2)}
+          <h1>Cyber Hub, Sector 17 & Random Plans</h1>
+          <div class="narrative">
+            Eventually, 13-hour texts weren't enough—I just wanted to see you after office. We stepped out of the digital bubble for our breakthrough first real date at <strong>Cyber Hub</strong>.<br><br>
+            Soon, it turned into our favorite routine: spontaneous <em>"chal milte hain"</em> plans, Sector 14 and Sector 17 runs, McDonald's, pizza, pasta, and endless cravings. And then came November 2025—your birthday last year, right as things were becoming official.
+          </div>
+          <span class="prompt-label">Quick memory test: What showed up at your place in Sector 17 for your birthday surprise last November?</span>
+          <div class="btn-list">
+            <button id="c2_right">A "Timeless Love" rose bouquet, a chocolate cake, a sparkle candle, and a birthday star topper.</button>
+            <button id="c2_wrong">A box of protein bars and a formal LinkedIn connection request.</button>
+          </div>
+          <div class="feedback-box" id="fb2"></div>
+          <div id="c2_next"></div>
+        `;
+
+        const fb2 = document.getElementById("fb2");
+
+        document.getElementById("c2_wrong").onclick = (e) => {
+          e.target.classList.add("wrong-choice");
+          shakeCard();
+          fb2.className = "feedback-box";
+          fb2.style.display = "block";
+          fb2.innerHTML = "Imagine if I actually sent a LinkedIn request for your birthday 😂 Try the real answer!";
+        };
+
+        document.getElementById("c2_right").onclick = (e) => {
+          e.target.classList.add("correct-choice");
+          fb2.className = "feedback-box green";
+          fb2.style.display = "block";
+          fb2.innerHTML = `You remember! ❤️ From coordinating that surprise delivery to Sector 17 last November to sitting here one full year later—look how far we've come.`;
+          if (!document.getElementById("c2NextBtn")) {
+            const nxt = document.createElement("button");
+            nxt.id = "c2NextBtn";
+            nxt.className = "btn-primary";
+            nxt.innerText = "Next Chapter: The Boss Battle ⚔️ →";
+            nxt.onclick = () => goNext("🍕 'Chal Milte Hain'");
+            document.getElementById("c2_next").appendChild(nxt);
+          }
+        };
+      }
+
+      // CHAPTER 3: BOSS BATTLE - WAFFLES VS KITKAT PANCAKES
+      else if (step === 3) {
+        card.innerHTML = `
+          ${renderHeader("CHAPTER 3 OF 7 • BOSS BATTLE ⚔️", 3)}
+          <h1>Waffles vs. KitKat Pancakes</h1>
+          <div class="narrative">
+            We agree on a lot of things, Bubu. We love food, we love random evening plans, and we love annoying each other.<br><br>
+            But there is one ongoing debate where you refuse to listen to logic, and I refuse to back down. Since it's your birthday at 12 AM, I am giving you a chance to officially settle this. Which dessert is superior?
+          </div>
+          <div class="btn-list">
+            <button id="waffleBtn">🧇 Waffles (Bubu's stubborn choice)</button>
+            <button id="pancakeBtn">🥞 KitKat Pancakes (Mannu's objectively correct choice)</button>
+          </div>
+          <div class="feedback-box" id="fb3"></div>
+          <div id="c3_next"></div>
+        `;
+
+        let waffleClicks = 0;
+        const fb3 = document.getElementById("fb3");
+        const waffleBtn = document.getElementById("waffleBtn");
+        const pancakeBtn = document.getElementById("pancakeBtn");
+
+        function unlockTruce() {
+          fb3.className = "feedback-box gold";
+          fb3.style.display = "block";
+          fb3.innerHTML = `<strong>🤝 OFFICIAL BIRTHDAY TRUCE DECLARED</strong><br>Fine! Whether you clicked KitKat Pancakes to make me happy or spammed Waffles out of pure stubbornness—I'll happily go eat both with you in Sector 14/17 anytime. (Even though KitKat Pancakes still win 🥞).`;
+          if (!document.getElementById("c3NextBtn")) {
+            const nxt = document.createElement("button");
+            nxt.id = "c3NextBtn";
+            nxt.className = "btn-primary";
+            nxt.innerText = "Next Chapter: Our Cinema Record →";
+            nxt.onclick = () => goNext("🥞 Pancake Truce");
+            document.getElementById("c3_next").appendChild(nxt);
+          }
+        }
+
+        waffleBtn.onclick = () => {
+          waffleClicks++;
+          shakeCard();
+          fb3.style.display = "block";
+          if (waffleClicks === 1) {
+            fb3.className = "feedback-box";
+            fb3.innerHTML = "⚠️ <strong>SYSTEM ERROR 404:</strong> Taste buds not calibrated. KitKat Pancakes are clearly undefeated. Try clicking the right answer below!";
+          } else if (waffleClicks === 2) {
+            waffleBtn.innerText = "🧇 Still Waffles! I am not backing down 😤";
+            fb3.className = "feedback-box";
+            fb3.innerHTML = "Look at this stubbornness! Even on your birthday at midnight you won't let me win this argument 😂 Tap once more if you really insist...";
+          } else {
+            unlockTruce();
+          }
+        };
+
+        pancakeBtn.onclick = () => {
+          pancakeBtn.classList.add("correct-choice");
+          unlockTruce();
+        };
+      }
+
+      // CHAPTER 4: THE MOVIE CURSE
+      else if (step === 4) {
+        card.innerHTML = `
+          ${renderHeader("CHAPTER 4 OF 7 • CINEMA DIAGNOSTICS", 4)}
+          <h1>The Unbroken Movie Curse 🍿</h1>
+          <div class="narrative">
+            Let's talk about our track record with watching movies together. We've earnestly sat down and started <strong>3 or 4 different movies</strong> together so far.<br><br>
+            Be honest: how many of those movies have we actually finished watching till the end credits?
+          </div>
+          <div class="btn-list">
+            <button id="c4_wrong">Every single one, in pin-drop silence, taking notes on the cinematography.</button>
+            <button id="c4_right">Literally ZERO (0/4). Every movie turned out to be terrible, so we ditched the movie and just talked the whole time.</button>
+          </div>
+          <div class="feedback-box" id="fb4"></div>
+          <div id="c4_next"></div>
+        `;
+
+        const fb4 = document.getElementById("fb4");
+
+        document.getElementById("c4_wrong").onclick = (e) => {
+          e.target.classList.add("wrong-choice");
+          shakeCard();
+          fb4.className = "feedback-box";
+          fb4.style.display = "block";
+          fb4.innerHTML = "Pin-drop silence? Us?! We can't stay quiet for 10 minutes together. Try again!";
+        };
+
+        document.getElementById("c4_right").onclick = (e) => {
+          e.target.classList.add("correct-choice");
+          fb4.className = "feedback-box green";
+          fb4.style.display = "block";
+          fb4.innerHTML = `<strong>0 out of 4!</strong> An undefeated streak. 😂 Every single time, the movie was terrible—and every single time, just talking to you, laughing, and being in our own world was 100x better than whatever was on the screen.`;
+          if (!document.getElementById("c4NextBtn")) {
+            const nxt = document.createElement("button");
+            nxt.id = "c4NextBtn";
+            nxt.className = "btn-primary";
+            nxt.innerText = "Next Chapter: Ego pe Ego →";
+            nxt.onclick = () => goNext("🎬 0/4 Movies");
+            document.getElementById("c4_next").appendChild(nxt);
+          }
+        };
+      }
+
+      // CHAPTER 5: EGO PE EGO MINI-GAME
+      else if (step === 5) {
+        card.innerHTML = `
+          ${renderHeader("CHAPTER 5 OF 7 • REAL LIFE MECHANICS", 5)}
+          <h1>Ego pe Ego: "Haan Bhai, Ab Nahi Baat Karni" 😂</h1>
+          <div class="narrative">
+            Our relationship hasn't been some fake, picture-perfect Instagram story. It has been <strong>real</strong>. It has been <em>us</em>—thoda pagal, thoda irritating, thoda dramatic, bohot saara pyaar, and a LOT of food.<br><br>
+            Including those fights where both of us are angry, full <em>ego pe ego</em>, and both of us are sitting there thinking: <strong>"Haan bhai, ab nahi baat karni."</strong> 😤<br><br>
+            Tap the button below to break the stubborn standoff and bring the Ego Meter down to 0%:
+          </div>
+          <div class="ego-widget">
+            <div class="ego-header">
+              <span id="egoLabel">STUBBORN EGO METER</span>
+              <span id="egoPct">100%</span>
+            </div>
+            <div class="ego-track">
+              <div class="ego-bar" id="egoBar"></div>
+            </div>
+          </div>
+          <button class="btn-primary" id="egoActionBtn">Tap 1: Send the first text anyway 💬</button>
+          <div class="feedback-box" id="fb5"></div>
+          <div id="c5_next"></div>
+        `;
+
+        let egoStage = 0;
+        const egoBar = document.getElementById("egoBar");
+        const egoPct = document.getElementById("egoPct");
+        const egoLabel = document.getElementById("egoLabel");
+        const egoBtn = document.getElementById("egoActionBtn");
+        const fb5 = document.getElementById("fb5");
+
+        egoBtn.onclick = () => {
+          egoStage++;
+          if (egoStage === 1) {
+            shakeCard();
+            egoBar.style.width = "65%";
+            egoPct.innerText = "65%";
+            fb5.style.display = "block";
+            fb5.innerHTML = "Still pretending to be mad with one-word replies... tap again!";
+            egoBtn.innerText = "Tap 2: Sit down & actually talk it out 🗣️";
+          } else if (egoStage === 2) {
+            shakeCard();
+            egoBar.style.width = "30%";
+            egoPct.innerText = "30%";
+            fb5.innerHTML = "The fake anger is cracking. Both of us want to laugh now... one more tap!";
+            egoBtn.innerText = "Tap 3: Hug it out, understand each other & order food 🍕❤️";
+          } else if (egoStage === 3) {
+            egoBar.style.width = "100%";
+            egoBar.style.background = "linear-gradient(90deg, #3dd68c, #ff4d7d)";
+            egoLabel.innerText = "EGO: 0% • PYAAR & UNDERSTANDING:";
+            egoLabel.style.color = "#3dd68c";
+            egoPct.innerText = "100%";
+            egoBtn.style.display = "none";
+
+            fb5.className = "feedback-box green";
+            fb5.innerHTML = `<strong>"And somehow, we always come back to each other."</strong><br>We talk, we sort things out, we understand each other a little better, and we continue. Being the person I want to fight with and then immediately talk to again—that's what makes our one year so beautiful. ❤️`;
+
+            const nxt = document.createElement("button");
+            nxt.className = "btn-primary";
+            nxt.innerText = "Next Chapter: Merging Worlds →";
+            nxt.onclick = () => goNext("❤️ Ego Melted");
+            document.getElementById("c5_next").appendChild(nxt);
+          }
+        };
+      }
+
+      // CHAPTER 6: MERGING WORLDS (3 TAP-TO-UNLOCK CARDS)
+      else if (step === 6) {
+        card.innerHTML = `
+          ${renderHeader("CHAPTER 6 OF 7 • OUR WORLD", 6)}
+          <h1>Highway Buses, Valentine's & Everyday Comfort</h1>
+          <div class="narrative">
+            Somewhere along the way, through all the little moments that became memories without us even realizing it, our worlds completely merged.<br><br>
+            <strong>Tap all 3 memory cards below</strong> to unlock the moments that turned you into my routine, my comfort, and my person:
+          </div>
+          <div class="memory-grid">
+            <div class="mem-card" id="mem1">
+              <div class="mem-card-title">
+                <span>🚌 The Highway Bus Journey</span>
+                <span class="lock-icon" id="lock1">🔒 Tap to unlock</span>
+              </div>
+              <div class="mem-card-body">
+                <strong>Kurukshetra & Karnal Bound:</strong> Taking that bus journey together out of Gurgaon toward our hometowns—stepping outside our office bubble and crossing paths in the real world.
+              </div>
+            </div>
+
+            <div class="mem-card" id="mem2">
+              <div class="mem-card-title">
+                <span>🎈 Valentine's Day & Your Words</span>
+                <span class="lock-icon" id="lock2">🔒 Tap to unlock</span>
+              </div>
+              <div class="mem-card-body">
+                <strong>Decorations, Drinks & Heart:</strong> Setting up custom decorations, food, and drinks at your place—and reading the words you wrote for me that I still carry in my head every single day.
+              </div>
+            </div>
+
+            <div class="mem-card" id="mem3">
+              <div class="mem-card-title">
+                <span>🏸 Badminton & The Little Things</span>
+                <span class="lock-icon" id="lock3">🔒 Tap to unlock</span>
+              </div>
+              <div class="mem-card-body">
+                <strong>From ₹300 Splitwise Tabs to Everything:</strong> Whether we're settling ₹300 badminton splits, annoying each other after office, or sharing every random thought and craving—you took up so much space in my life and my heart.
+              </div>
+            </div>
+          </div>
+          <div id="c6_next"></div>
+        `;
+
+        let unlockedCount = 0;
+        const seen = { 1: false, 2: false, 3: false };
+
+        [1, 2, 3].forEach(num => {
+          const el = document.getElementById(`mem${num}`);
+          el.onclick = () => {
+            if (!seen[num]) {
+              seen[num] = true;
+              unlockedCount++;
+              el.classList.add("unlocked");
+              document.getElementById(`lock${num}`).innerText = "✨ Unlocked";
+              if (unlockedCount === 3) {
+                const nxt = document.createElement("button");
+                nxt.className = "btn-primary";
+                nxt.innerText = "Unlock Your Midnight Birthday Letter 🎂❤️";
+                nxt.onclick = () => {
+                  launchCelebration();
+                  goNext("♾️ My Person");
+                };
+                document.getElementById("c6_next").appendChild(nxt);
+              }
+            }
+          };
+        });
+      }
+
+      // CHAPTER 7: FINAL MIDNIGHT BIRTHDAY LETTER
+      else if (step === 7) {
+        card.innerHTML = `
+          ${renderHeader("🎂 NOVEMBER 19 • 12:00 AM • HAPPY BIRTHDAY BUBU", 7)}
+          <h1>To My Favorite Person ❤️</h1>
+          <div class="letter-scroll">
+            <p class="letter-greeting">Happy Birthday, Bubu. ❤️</p>
+            <p>If someone had told me back in 2024, when we were just two colleagues at Amex, that you would become <em>this</em> important to me, I probably would have laughed too. Back then, I had no idea that those late-night Ludo games and 13-hour text marathons would turn into the best part of my life.</p>
+            <p>Looking back at this past year—from our first date at Cyber Hub, to hiding from people in the office (and getting caught anyway 😂), to last November's cake and roses in Sector 17, to that bus ride toward Kurukshetra and Karnal—it honestly blows my mind how naturally you became my person.</p>
+            <p>You became the person I look for in every room. The person I want to see right after office. The person I want to tell random things to, annoy for no reason, fight with in full <em>ego pe ego</em> mode (<em>"haan bhai, ab nahi baat karni"</em>), and then immediately come back to five minutes later because not talking to you isn't even an option.</p>
+            <p>What I love most about us is that it hasn't been some fake, picture-perfect setup. It has been real. Thoda pagal, thoda irritating, thoda dramatic, bohot saara pyaar, 0 finished movies out of 4, endless Waffles vs. KitKat Pancakes debates, and a LOT of pizza, pasta, and McDonald's.</p>
+            <p>You have become my routine, my comfort, my happiness, and my favorite part of every day. Thank you for every hug, every kiss, every <em>"take care,"</em> every time you stayed, every time you handled me, and every random <em>"chal milte hain"</em> plan that turned into a memory we'll never forget.</p>
+            <p>Today is all about you, Baby. I don't just want to celebrate the year we've had—I want to make a lifetime of memories with you. More trips, more birthdays, more late evenings, more laughing till our stomachs hurt, more stupid fights that end in hugs, and more of everything, together.</p>
+            <p><strong>Bas aise hi mere saath rehna, mera haath pakad ke. 🫶🏻</strong></p>
+            <p>Happy Birthday, Dhairya. I love you, Baby—more than I can ever put into words. ❤️</p>
+            <div class="letter-signoff">
+              Always yours,<br>Mannu ❤️
+            </div>
+          </div>
+          <div class="footer-actions">
+            <button class="btn-primary" id="moreConfettiBtn">🎉 Shower More Hearts</button>
+            <button id="replayBtn">🔄 Replay Story</button>
+          </div>
+        `;
+
+        document.getElementById("moreConfettiBtn").onclick = () => launchCelebration();
+        document.getElementById("replayBtn").onclick = () => {
+          step = 0;
+          renderStep();
+        };
+      }
+    }
+
+    renderStep();
   </script>
 </body>
 </html>
