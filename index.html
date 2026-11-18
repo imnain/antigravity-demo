@@ -3,24 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>For Bubu ❤️ | 12:00 AM</title>
+  <title>12:00 AM • For Bubu ❤️</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-deep: #08050d;
-      --bg-mid: #140b21;
-      --card-bg: rgba(24, 15, 38, 0.78);
-      --card-border: rgba(255, 117, 151, 0.22);
+      --bg-deep: #07040c;
+      --bg-mid: #130a20;
+      --card-bg: rgba(24, 14, 38, 0.82);
+      --card-border: rgba(255, 120, 158, 0.22);
       --accent: #ff4d7d;
+      --accent-soft: rgba(255, 77, 125, 0.14);
       --accent-glow: rgba(255, 77, 125, 0.38);
-      --gold: #f7c873;
-      --gold-soft: rgba(247, 200, 115, 0.14);
-      --success: #3dd68c;
-      --text-main: #fcf7ff;
-      --text-soft: #d5c7e8;
-      --text-muted: #9a88b3;
+      --gold: #f6c667;
+      --gold-soft: rgba(246, 198, 103, 0.12);
+      --text-main: #fcf8ff;
+      --text-soft: #dcd0ec;
+      --text-muted: #9885b2;
     }
 
     * {
@@ -32,7 +32,7 @@
 
     body {
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: radial-gradient(circle at 50% 0%, #241138 0%, var(--bg-mid) 45%, var(--bg-deep) 100%);
+      background: radial-gradient(circle at 50% 0%, #26113b 0%, var(--bg-mid) 50%, var(--bg-deep) 100%);
       color: var(--text-main);
       min-height: 100vh;
       min-height: 100dvh;
@@ -40,12 +40,11 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 16px;
+      padding: 18px;
       overflow-x: hidden;
       position: relative;
     }
 
-    /* Ambient Background Canvas */
     #starsCanvas, #fxCanvas {
       position: fixed;
       top: 0;
@@ -55,405 +54,295 @@
       pointer-events: none;
     }
     #starsCanvas { z-index: 0; }
-    #fxCanvas { z-index: 20; }
+    #fxCanvas { z-index: 25; }
 
-    /* Ambient Glow Orbs */
     .orb {
       position: fixed;
       border-radius: 50%;
-      filter: blur(80px);
+      filter: blur(85px);
       pointer-events: none;
       z-index: 0;
-      opacity: 0.45;
+      opacity: 0.42;
     }
-    .orb-1 {
-      width: 280px;
-      height: 280px;
-      background: #ff3b72;
-      top: -60px;
-      right: -60px;
-    }
-    .orb-2 {
-      width: 260px;
-      height: 260px;
-      background: #7b2cbf;
-      bottom: -50px;
-      left: -60px;
-    }
+    .orb-1 { width: 280px; height: 280px; background: #ff3b72; top: -70px; right: -60px; }
+    .orb-2 { width: 260px; height: 260px; background: #7b2cbf; bottom: -60px; left: -60px; }
 
-    /* Main Shell */
     .shell {
       width: 100%;
-      max-width: 460px;
+      max-width: 450px;
       z-index: 5;
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
 
-    /* Inventory / Unlocked Memories Bar */
-    .inventory-bar {
-      display: flex;
-      gap: 6px;
-      overflow-x: auto;
-      padding: 4px 2px;
-      scrollbar-width: none;
-      min-height: 32px;
-      align-items: center;
-    }
-    .inventory-bar::-webkit-scrollbar { display: none; }
-
-    .inv-pill {
-      flex-shrink: 0;
-      font-size: 11px;
-      font-weight: 600;
-      padding: 5px 11px;
-      border-radius: 99px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(247, 200, 115, 0.3);
-      color: var(--gold);
-      backdrop-filter: blur(8px);
-      animation: popIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    /* Main Glass Card */
+    /* Main Storybook Card */
     .card {
       background: var(--card-bg);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
       border: 1px solid var(--card-border);
-      border-radius: 28px;
-      padding: 26px 22px;
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      border-radius: 30px;
+      padding: 28px 24px;
+      box-shadow: 0 24px 65px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.12);
       position: relative;
       overflow: hidden;
-      transition: transform 0.3s ease;
     }
 
     .fade-enter {
-      animation: cardFade 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+      animation: pageTurn 0.5s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    @keyframes cardFade {
+    @keyframes pageTurn {
       from { opacity: 0; transform: translateY(14px) scale(0.985); }
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    @keyframes popIn {
-      from { opacity: 0; transform: scale(0.75); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      20% { transform: translateX(-9px); }
-      40% { transform: translateX(9px); }
-      60% { transform: translateX(-6px); }
-      80% { transform: translateX(6px); }
-    }
-
-    .shake { animation: shake 0.42s ease; }
-
-    /* Progress Bar */
-    .top-meta {
+    /* Subtle Page Dots */
+    .dots-bar {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-      font-size: 11.5px;
-      color: var(--text-muted);
-      font-weight: 600;
-      letter-spacing: 0.4px;
-    }
-
-    .progress-track {
-      width: 100%;
-      height: 6px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 99px;
+      justify-content: center;
+      gap: 7px;
       margin-bottom: 20px;
-      overflow: hidden;
     }
-
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #ff4d7d, #ffb36b, #ff4d7d);
-      background-size: 200% 100%;
+    .dot {
+      width: 7px;
+      height: 7px;
       border-radius: 99px;
-      transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-      animation: shimmer 3s infinite linear;
+      background: rgba(255, 255, 255, 0.16);
+      transition: all 0.35s ease;
+    }
+    .dot.active {
+      width: 24px;
+      background: linear-gradient(90deg, #ff4d7d, #f6c667);
+    }
+    .dot.done {
+      background: rgba(255, 77, 125, 0.5);
     }
 
-    @keyframes shimmer {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 200% 50%; }
-    }
-
-    /* Badges & Typography */
-    .badge {
-      display: inline-flex;
+    /* Dynamic Facial Expression Header */
+    .mood-stage {
+      display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 6px;
-      font-size: 11px;
+      margin-bottom: 18px;
+    }
+
+    .emoji-avatar {
+      width: 74px;
+      height: 74px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255, 77, 125, 0.25), rgba(246, 198, 103, 0.08));
+      border: 1px solid rgba(255, 138, 171, 0.35);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 38px;
+      box-shadow: 0 10px 30px rgba(255, 77, 125, 0.2);
+      margin-bottom: 8px;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      user-select: none;
+    }
+
+    .emoji-pop {
+      animation: emojiPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes emojiPop {
+      0% { transform: scale(0.6) rotate(-8deg); }
+      60% { transform: scale(1.18) rotate(4deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+
+    .mood-caption {
+      font-size: 11.5px;
       font-weight: 700;
-      letter-spacing: 1.1px;
+      letter-spacing: 0.9px;
       text-transform: uppercase;
-      color: var(--accent);
-      background: rgba(255, 77, 125, 0.14);
-      border: 1px solid rgba(255, 77, 125, 0.3);
-      padding: 5px 12px;
+      color: var(--gold);
+      background: var(--gold-soft);
+      border: 1px solid rgba(246, 198, 103, 0.3);
+      padding: 4px 12px;
       border-radius: 99px;
-      margin-bottom: 14px;
     }
 
     h1 {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 30px;
+      font-size: 29px;
       font-weight: 700;
-      line-height: 1.18;
+      line-height: 1.2;
       color: #ffffff;
-      margin-bottom: 14px;
-      letter-spacing: -0.2px;
+      text-align: center;
+      margin-bottom: 16px;
     }
 
-    .narrative {
-      font-size: 15px;
-      line-height: 1.68;
+    .story-text {
+      font-size: 15.2px;
+      line-height: 1.74;
       color: var(--text-soft);
       margin-bottom: 18px;
     }
 
-    .narrative strong, .narrative b {
+    .story-text p {
+      margin-bottom: 13px;
+    }
+    .story-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    .story-text strong {
       color: #ffffff;
       font-weight: 600;
     }
 
-    .narrative em, .narrative i {
+    .story-text em {
       color: var(--gold);
       font-style: italic;
     }
 
-    .prompt-label {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--gold);
-      margin-bottom: 10px;
-      display: block;
+    /* Interactive Story Reveal Box */
+    .whisper-box {
+      margin: 16px 0;
+      padding: 15px 16px;
+      border-radius: 18px;
+      background: rgba(255, 77, 125, 0.1);
+      border: 1px solid rgba(255, 77, 125, 0.32);
+      font-size: 14.5px;
+      line-height: 1.65;
+      color: #ffe6ee;
+      display: none;
+      animation: pageTurn 0.35s ease;
     }
 
-    /* Interactive Buttons */
-    .btn-list {
+    .whisper-box.gold {
+      background: rgba(246, 198, 103, 0.1);
+      border-color: rgba(246, 198, 103, 0.38);
+      color: #fff3d9;
+    }
+
+    /* Reaction Chips & Buttons */
+    .reaction-group {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 9px;
+      margin-top: 8px;
     }
 
-    button {
+    .react-btn {
       width: 100%;
-      padding: 15px 16px;
+      padding: 13px 16px;
       border-radius: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(255, 255, 255, 0.045);
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      background: rgba(255, 255, 255, 0.05);
       color: var(--text-main);
       font-family: inherit;
-      font-size: 14.5px;
+      font-size: 14.2px;
       font-weight: 500;
-      line-height: 1.45;
       text-align: left;
       cursor: pointer;
-      transition: all 0.22s ease;
-      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s ease;
     }
 
-    button:hover {
-      background: rgba(255, 77, 125, 0.11);
+    .react-btn:hover {
+      background: rgba(255, 77, 125, 0.12);
       border-color: rgba(255, 77, 125, 0.45);
-      transform: translateY(-1px);
     }
 
-    button:active {
+    .react-btn.selected {
+      background: rgba(246, 198, 103, 0.14);
+      border-color: var(--gold);
+      color: #fff;
+    }
+
+    .next-btn {
+      width: 100%;
+      padding: 15px 18px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 190, 205, 0.35);
+      background: linear-gradient(135deg, #ff4d7d 0%, #d92b60 100%);
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 10px 26px var(--accent-glow);
+      margin-top: 14px;
+      transition: all 0.22s ease;
+    }
+
+    .next-btn:active {
       transform: scale(0.985);
     }
 
-    button.btn-primary {
-      background: linear-gradient(135deg, #ff4d7d 0%, #d92b60 100%);
-      border: 1px solid rgba(255, 182, 198, 0.35);
-      color: #ffffff;
-      font-weight: 700;
-      text-align: center;
-      font-size: 15px;
-      box-shadow: 0 10px 25px var(--accent-glow);
-      margin-top: 8px;
-    }
-
-    button.btn-primary:hover {
-      filter: brightness(1.08);
-    }
-
-    button.btn-secondary {
-      background: var(--gold-soft);
-      border: 1px solid rgba(247, 200, 115, 0.4);
-      color: var(--gold);
-      font-weight: 600;
-      text-align: center;
-      margin-top: 8px;
-    }
-
-    button.correct-choice {
-      background: rgba(61, 214, 140, 0.14) !important;
-      border-color: var(--success) !important;
-      color: #e6fff2 !important;
-    }
-
-    button.wrong-choice {
-      background: rgba(255, 77, 125, 0.12);
-      border-color: rgba(255, 77, 125, 0.5);
-    }
-
-    /* Callouts & Feedback Boxes */
-    .feedback-box {
-      margin-top: 14px;
-      padding: 14px 16px;
-      border-radius: 16px;
-      background: rgba(255, 77, 125, 0.1);
-      border: 1px solid rgba(255, 77, 125, 0.32);
-      font-size: 14px;
-      line-height: 1.58;
-      color: #ffe3ec;
-      display: none;
-      animation: cardFade 0.3s ease;
-    }
-
-    .feedback-box.gold {
-      background: rgba(247, 200, 115, 0.1);
-      border-color: rgba(247, 200, 115, 0.4);
-      color: #fff2d6;
-    }
-
-    .feedback-box.green {
-      background: rgba(61, 214, 140, 0.11);
-      border-color: rgba(61, 214, 140, 0.4);
-      color: #dcffec;
-    }
-
-    /* Ego Meter Specific */
-    .ego-widget {
-      background: rgba(10, 6, 18, 0.65);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 18px;
-      padding: 16px;
-      margin-bottom: 14px;
-    }
-
-    .ego-header {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12.5px;
-      font-weight: 700;
-      letter-spacing: 0.6px;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-      color: #ffb36b;
-    }
-
-    .ego-track {
-      width: 100%;
-      height: 12px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 99px;
-      overflow: hidden;
-    }
-
-    .ego-bar {
-      height: 100%;
-      width: 100%;
-      background: linear-gradient(90deg, #ff3b3b, #ff9900);
-      border-radius: 99px;
-      transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1), background 0.4s ease;
-    }
-
-    /* Chapter 6 Tap-to-Reveal Cards */
-    .memory-grid {
+    /* Polaroid Memory Tap Cards */
+    .moment-list {
       display: flex;
       flex-direction: column;
       gap: 10px;
-      margin-bottom: 12px;
+      margin: 14px 0;
     }
 
-    .mem-card {
+    .moment-item {
       border-radius: 16px;
-      padding: 14px 16px;
+      padding: 13px 15px;
       background: rgba(255, 255, 255, 0.04);
-      border: 1px dashed rgba(247, 200, 115, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       cursor: pointer;
       transition: all 0.25s ease;
     }
 
-    .mem-card.unlocked {
-      background: rgba(247, 200, 115, 0.09);
-      border: 1px solid rgba(247, 200, 115, 0.45);
-      cursor: default;
+    .moment-item.opened {
+      background: rgba(246, 198, 103, 0.09);
+      border-color: rgba(246, 198, 103, 0.42);
     }
 
-    .mem-card-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--gold);
+    .moment-head {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
     }
 
-    .mem-card-body {
-      font-size: 13.5px;
-      line-height: 1.55;
+    .moment-body {
+      font-size: 13.8px;
+      line-height: 1.6;
       color: var(--text-soft);
       margin-top: 8px;
       display: none;
     }
 
-    .mem-card.unlocked .mem-card-body {
+    .moment-item.opened .moment-body {
       display: block;
-      animation: cardFade 0.3s ease;
+      animation: pageTurn 0.3s ease;
     }
 
-    /* Final Letter Styling */
-    .letter-scroll {
-      background: linear-gradient(180deg, rgba(16, 10, 28, 0.85) 0%, rgba(26, 14, 42, 0.9) 100%);
-      border: 1px solid rgba(247, 200, 115, 0.35);
+    /* Final Letter Box */
+    .letter-container {
+      background: linear-gradient(180deg, rgba(16, 9, 28, 0.88) 0%, rgba(28, 14, 45, 0.92) 100%);
+      border: 1px solid rgba(246, 198, 103, 0.38);
       border-radius: 22px;
       padding: 22px 18px;
-      max-height: 62vh;
+      max-height: 60vh;
       overflow-y: auto;
+      margin-bottom: 14px;
       box-shadow: inset 0 0 30px rgba(255, 77, 125, 0.08);
-      margin-bottom: 16px;
     }
 
-    .letter-scroll::-webkit-scrollbar {
-      width: 5px;
-    }
-    .letter-scroll::-webkit-scrollbar-thumb {
-      background: rgba(255, 77, 125, 0.35);
-      border-radius: 99px;
-    }
-
-    .letter-scroll p {
+    .letter-container p {
       font-size: 14.8px;
       line-height: 1.76;
-      color: #f2eafc;
-      margin-bottom: 15px;
+      color: #f3ecfc;
+      margin-bottom: 14px;
     }
 
-    .letter-greeting {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 24px !important;
-      font-weight: 700;
-      color: var(--gold) !important;
-      margin-bottom: 16px !important;
-    }
-
-    .letter-signoff {
-      margin-top: 20px;
+    .signoff {
+      margin-top: 18px;
       padding-top: 14px;
       border-top: 1px solid rgba(255, 255, 255, 0.1);
       font-family: 'Cormorant Garamond', Georgia, serif;
@@ -462,14 +351,14 @@
       color: var(--accent);
     }
 
-    .footer-actions {
+    .footer-row {
       display: flex;
       gap: 10px;
     }
-    .footer-actions button {
-      text-align: center;
+    .footer-row button {
+      margin-top: 0;
+      padding: 13px;
       font-size: 13.5px;
-      padding: 12px;
     }
   </style>
 </head>
@@ -480,13 +369,12 @@
   <canvas id="fxCanvas"></canvas>
 
   <div class="shell">
-    <div class="inventory-bar" id="inventoryBar"></div>
     <div class="card fade-enter" id="card"></div>
   </div>
 
   <script>
     /* ==========================================
-       1. STARRY BACKGROUND ENGINE
+       1. STARRY NIGHT SKY
        ========================================== */
     const starsCanvas = document.getElementById("starsCanvas");
     const sCtx = starsCanvas.getContext("2d");
@@ -495,12 +383,12 @@
     function initStars() {
       starsCanvas.width = window.innerWidth;
       starsCanvas.height = window.innerHeight;
-      stars = Array.from({ length: 65 }, () => ({
+      stars = Array.from({ length: 60 }, () => ({
         x: Math.random() * starsCanvas.width,
         y: Math.random() * starsCanvas.height,
-        r: Math.random() * 1.6 + 0.4,
+        r: Math.random() * 1.5 + 0.4,
         alpha: Math.random(),
-        speed: Math.random() * 0.015 + 0.005
+        speed: Math.random() * 0.014 + 0.004
       }));
     }
 
@@ -511,7 +399,7 @@
         if (s.alpha > 1 || s.alpha < 0.15) s.speed = -s.speed;
         sCtx.beginPath();
         sCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        sCtx.fillStyle = `rgba(255, 230, 245, ${Math.abs(s.alpha)})`;
+        sCtx.fillStyle = `rgba(255, 232, 245, ${Math.abs(s.alpha)})`;
         sCtx.fill();
       });
       requestAnimationFrame(drawStars);
@@ -521,37 +409,35 @@
     drawStars();
 
     /* ==========================================
-       2. CONFETTI & FLOATING HEARTS ENGINE
+       2. FLOATING HEARTS & CONFETTI
        ========================================== */
     const fxCanvas = document.getElementById("fxCanvas");
     const fCtx = fxCanvas.getContext("2d");
     let particles = [];
-    let fxRunning = false;
+    let fxActive = false;
 
-    function launchCelebration() {
+    function launchHearts() {
       fxCanvas.width = window.innerWidth;
       fxCanvas.height = window.innerHeight;
-      const colors = ["#ff4d7d", "#f7c873", "#ff8fab", "#ffffff", "#c77dff"];
-
-      for (let i = 0; i < 95; i++) {
+      const colors = ["#ff4d7d", "#f6c667", "#ff8fab", "#ffffff", "#e0aaff"];
+      for (let i = 0; i < 85; i++) {
         particles.push({
           x: Math.random() * fxCanvas.width,
           y: Math.random() * fxCanvas.height - fxCanvas.height,
-          vx: (Math.random() - 0.5) * 2.5,
-          vy: Math.random() * 3.2 + 1.8,
-          size: Math.random() * 7 + 4,
+          vx: (Math.random() - 0.5) * 2.2,
+          vy: Math.random() * 2.8 + 1.6,
+          size: Math.random() * 7 + 5,
           color: colors[Math.floor(Math.random() * colors.length)],
-          isHeart: Math.random() > 0.55,
-          rot: Math.random() * Math.PI
+          isHeart: Math.random() > 0.4
         });
       }
-      if (!fxRunning) {
-        fxRunning = true;
-        animateFx();
+      if (!fxActive) {
+        fxActive = true;
+        animateHearts();
       }
     }
 
-    function drawHeart(ctx, x, y, size) {
+    function drawHeartShape(ctx, x, y, size) {
       ctx.save();
       ctx.translate(x, y);
       ctx.beginPath();
@@ -564,477 +450,369 @@
       ctx.restore();
     }
 
-    function animateFx() {
+    function animateHearts() {
       fCtx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
       particles.forEach((p, idx) => {
         p.x += p.vx;
         p.y += p.vy;
         fCtx.fillStyle = p.color;
         if (p.isHeart) {
-          drawHeart(fCtx, p.x, p.y, p.size * 1.3);
+          drawHeartShape(fCtx, p.x, p.y, p.size * 1.3);
         } else {
           fCtx.beginPath();
           fCtx.arc(p.x, p.y, p.size / 2, 0, Math.PI * 2);
           fCtx.fill();
         }
-        if (p.y > fxCanvas.height + 20) {
-          particles.splice(idx, 1);
-        }
+        if (p.y > fxCanvas.height + 20) particles.splice(idx, 1);
       });
       if (particles.length > 0) {
-        requestAnimationFrame(animateFx);
+        requestAnimationFrame(animateHearts);
       } else {
-        fxRunning = false;
+        fxActive = false;
         fCtx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
       }
     }
 
     /* ==========================================
-       3. STORY STATE & INVENTORY ENGINE
+       3. STORYBOOK ENGINE & FACIAL EXPRESSIONS
        ========================================== */
     const card = document.getElementById("card");
-    const inventoryBar = document.getElementById("inventoryBar");
-    let step = 0;
-    const unlockedPills = [];
+    const totalPages = 8;
+    let page = 0;
 
-    function unlockPill(text) {
-      if (!unlockedPills.includes(text)) {
-        unlockedPills.push(text);
-        const span = document.createElement("span");
-        span.className = "inv-pill";
-        span.innerText = text;
-        inventoryBar.appendChild(span);
-        inventoryBar.scrollLeft = inventoryBar.scrollWidth;
+    function setMood(emoji, label) {
+      const av = document.getElementById("emojiAvatar");
+      const cap = document.getElementById("moodCaption");
+      if (av && cap) {
+        av.classList.remove("emoji-pop");
+        void av.offsetWidth;
+        av.innerText = emoji;
+        cap.innerText = label;
+        av.classList.add("emoji-pop");
       }
     }
 
-    function shakeCard() {
-      card.classList.remove("shake");
-      void card.offsetWidth;
-      card.classList.add("shake");
+    function renderTop(emoji, moodLabel) {
+      let dots = `<div class="dots-bar">`;
+      for (let i = 0; i < totalPages; i++) {
+        const cls = i === page ? "dot active" : i < page ? "dot done" : "dot";
+        dots += `<span class="${cls}"></span>`;
+      }
+      dots += `</div>`;
+
+      return `
+        ${dots}
+        <div class="mood-stage">
+          <div class="emoji-avatar emoji-pop" id="emojiAvatar">${emoji}</div>
+          <span class="mood-caption" id="moodCaption">${moodLabel}</span>
+        </div>
+      `;
     }
 
-    function goNext(pillToUnlock) {
-      if (pillToUnlock) unlockPill(pillToUnlock);
-      step++;
+    function nextPage() {
+      page++;
       card.classList.remove("fade-enter");
       void card.offsetWidth;
       card.classList.add("fade-enter");
       window.scrollTo({ top: 0, behavior: "smooth" });
-      renderStep();
+      renderPage();
     }
 
-    function renderHeader(badgeText, currentChap, totalChap = 7) {
-      const pct = Math.round((currentChap / totalChap) * 100);
-      return `
-        <div class="top-meta">
-          <span>FOR BUBU ❤️</span>
-          <span>${pct}% COMPLETED</span>
-        </div>
-        <div class="progress-track">
-          <div class="progress-fill" style="width: ${pct}%"></div>
-        </div>
-        <div class="badge">${badgeText}</div>
-      `;
-    }
-
-    /* ==========================================
-       4. ALL 8 INTERACTIVE SCREENS
-       ========================================== */
-    function renderStep() {
-      // SCREEN 0: BOOT SCREEN
-      if (step === 0) {
+    function renderPage() {
+      // PAGE 0: 12:00 AM INTRO
+      if (page === 0) {
         card.innerHTML = `
-          ${renderHeader("🔒 SECURITY CHECK • 12:00 AM IST", 0)}
-          <h1>Hold on, Bubu. 🛑</h1>
-          <div class="narrative">
-            It’s officially your birthday. Before I let you unlock your midnight letter, the system needs to verify that it's actually you—and not an imposter pretending to be my favorite person.<br><br>
-            You have to survive <strong>7 chapters of our actual story</strong>—from 2024 office hallways to late-night Gurgaon food runs, bad movies, and our <em>ego pe ego</em> fights. Ready?
+          ${renderTop("😌", "12:00 AM • Just Us")}
+          <h1>Hey Bubu… it’s finally midnight. ✨</h1>
+          <div class="story-text">
+            <p>Happy Birthday, Baby. ❤️</p>
+            <p>Instead of just sending you a normal text tonight, I wanted to sit down with you for five minutes and walk through the story of how we actually got here.</p>
+            <p>No tests, no quizzes—just our favorite memories, the funny chaos only we know about, and everything you mean to me. Tap below whenever you're ready.</p>
           </div>
-          <div class="btn-list">
-            <button class="btn-primary" id="startBtn">I'm ready, Mannu. Let's go →</button>
-            <button id="attitudeBtn">Skip verification, I have attitude today 😤</button>
-          </div>
-          <div class="feedback-box" id="fb0"></div>
+          <button class="next-btn" id="next0">Open Page 1 🤍</button>
         `;
-        document.getElementById("startBtn").onclick = () => goNext("🔐 Verified Bubu");
-        document.getElementById("attitudeBtn").onclick = () => {
-          shakeCard();
-          const fb = document.getElementById("fb0");
-          fb.style.display = "block";
-          fb.innerHTML = "Haha nice try, Bubu. Attitude is 100% allowed, but skipping is not! Tap the pink button above ❤️";
+        document.getElementById("next0").onclick = nextPage;
+      }
+
+      // PAGE 1: OFFICE COLLEAGUES TO 13-HOUR MARATHONS
+      else if (page === 1) {
+        card.innerHTML = `
+          ${renderTop("🤫", "Two 'Normal' Colleagues")}
+          <h1>The 13-Hour Text & Ludo Era</h1>
+          <div class="story-text">
+            <p>Think back to 2024 at the Amex office. Back then, we were just colleagues walking past desks without a single clue of what was waiting ahead.</p>
+            <p>And then late 2025 happened. Suddenly, our nights turned into <strong>13-hour nonstop text marathons</strong>, hours-long voice calls, and way too competitive online Ludo matches—only to show up at the office the next morning trying to keep a completely straight, professional face. 😐</p>
+          </div>
+          <div class="reaction-group">
+            <button class="react-btn" id="r1_a">
+              <span>"Our daytime acting in office was terrible tbh"</span>
+              <span>🤭</span>
+            </button>
+            <button class="react-btn" id="r1_b">
+              <span>"Those Ludo nights & 13-hour chats though..."</span>
+              <span>🥹</span>
+            </button>
+          </div>
+          <div class="whisper-box" id="w1"></div>
+          <div id="nav1"></div>
+        `;
+
+        const showReply1 = (emoji, label, msg, btn) => {
+          document.querySelectorAll(".react-btn").forEach(b => b.classList.remove("selected"));
+          btn.classList.add("selected");
+          setMood(emoji, label);
+          const w = document.getElementById("w1");
+          w.style.display = "block";
+          w.innerHTML = msg;
+          if (!document.getElementById("n1")) {
+            const b = document.createElement("button");
+            b.id = "n1";
+            b.className = "next-btn";
+            b.innerText = "Turn the page →";
+            b.onclick = nextPage;
+            document.getElementById("nav1").appendChild(b);
+          }
+        };
+
+        document.getElementById("r1_a").onclick = function() {
+          showReply1("🤭", "Zero Poker Face", "Honestly, we thought we were being so slick walking around like normal coworkers, while running on 3 hours of sleep because we couldn't stop talking all night.", this);
+        };
+        document.getElementById("r1_b").onclick = function() {
+          showReply1("🥹", "Where It All Started", "Looking back, those late nights where neither of us wanted to hang up the call were the exact moment my routine started revolving around you.", this);
         };
       }
 
-      // CHAPTER 1: AMEX & LATE-NIGHT LUDO
-      else if (step === 1) {
+      // PAGE 2: ELAN MALL CRICKET SCREENING & VISHAL RANA
+      else if (page === 2) {
         card.innerHTML = `
-          ${renderHeader("CHAPTER 1 OF 7 • THE ORIGIN STORY", 1)}
-          <h1>2024 Colleagues to 13-Hour Marathons</h1>
-          <div class="narrative">
-            If someone had told us back in 2024 at the Amex office in Gurgaon that this colleague would become <em>this</em> important, we both would have laughed.<br><br>
-            Then came late 2025. By day, we walked around the office pretending to be strictly professional colleagues. By night, things looked very different. What was actually happening behind the scenes?
+          ${renderTop("😎", "What Could Go Wrong?")}
+          <h1>The Elan Mall Mini-Heart Attack</h1>
+          <div class="story-text">
+            <p>Speaking of trying to keep our lives low-key from office people… remember the day we went to <strong>Elan Mall</strong> to watch the cricket match on the big theatre screen?</p>
+            <p>We stepped outside casually, minding our own business, and suddenly—<em>BOOM</em>. Right in front of us stands our common colleague, <strong>Vishal Rana</strong>. 😳</p>
           </div>
-          <div class="btn-list">
-            <button id="c1_wrong">We were super obvious at work and went to sleep at 9 PM every night.</button>
-            <button id="c1_right">13-hour text marathons, hours-long voice calls, and intense online Ludo matches.</button>
+          <div class="reaction-group">
+            <button class="react-btn" id="r2_a">
+              <span>Tap to relive the sheer panic on our faces</span>
+              <span>😱</span>
+            </button>
           </div>
-          <div class="feedback-box" id="fb1"></div>
-          <div class="feedback-box gold" id="fb1_secret"></div>
-          <div id="c1_next"></div>
+          <div class="whisper-box gold" id="w2"></div>
+          <div id="nav2"></div>
         `;
 
-        const fb1 = document.getElementById("fb1");
-        const fbSecret = document.getElementById("fb1_secret");
+        document.getElementById("r2_a").onclick = function() {
+          this.classList.add("selected");
+          setMood("😰", "Soul Left The Body 💀");
+          const w = document.getElementById("w2");
+          w.style.display = "block";
+          w.innerHTML = `
+            That silence was SO awkward for us and for him! Both of us literally froze thinking, <em>"Bas, aaj toh gaye—everyone is going to know now."</em> 😂<br><br>
+            Shoutout to Vishal though—man turned out to be a total vault and didn't tell a single soul. Looking back now, even getting caught like that with you is one of my favorite funny memories. 😌
+          `;
+          setTimeout(() => setMood("😮‍💨", "Secret Safe With Vishal"), 1800);
 
-        document.getElementById("c1_wrong").onclick = (e) => {
-          e.target.classList.add("wrong-choice");
-          shakeCard();
-          fb1.className = "feedback-box";
-          fb1.style.display = "block";
-          fb1.innerHTML = "False! Nobody slept at 9 PM. We were busy destroying our sleep schedules for each other. Pick the other option!";
-        };
-
-        document.getElementById("c1_right").onclick = (e) => {
-          e.target.classList.add("correct-choice");
-          fb1.className = "feedback-box green";
-          fb1.style.display = "block";
-          fb1.innerHTML = `Spot on. Those 13-hour text marathons, endless late-night calls, and Ludo battles were where everything changed.<br><br>Wait—there's one more classified detail from the office...`;
-
-          if (!document.getElementById("revealSecretBtn")) {
-            const secBtn = document.createElement("button");
-            secBtn.id = "revealSecretBtn";
-            secBtn.className = "btn-secondary";
-            secBtn.innerText = "What happened when we tried hiding from people? 👀";
-            secBtn.onclick = () => {
-              secBtn.style.display = "none";
-              fbSecret.style.display = "block";
-              fbSecret.innerHTML = `<strong>🕵️‍♂️ Classified Memory Unlocked:</strong><br>We literally tried hiding from people together like undercover agents... and STILL managed to get caught together. 😂 Smooth, right?`;
-              const nxt = document.createElement("button");
-              nxt.className = "btn-primary";
-              nxt.innerText = "Next Chapter: Stepping Out →";
-              nxt.onclick = () => goNext("🎲 13h Texts & Ludo");
-              document.getElementById("c1_next").appendChild(nxt);
-            };
-            document.getElementById("c1_next").appendChild(secBtn);
+          if (!document.getElementById("n2")) {
+            const b = document.createElement("button");
+            b.id = "n2";
+            b.className = "next-btn";
+            b.innerText = "Keep reading →";
+            b.onclick = nextPage;
+            document.getElementById("nav2").appendChild(b);
           }
         };
       }
 
-      // CHAPTER 2: CYBER HUB, SECTOR 17 & NOV 2025 SURPRISE
-      else if (step === 2) {
+      // PAGE 3: CYBER HUB, SECTOR 14/17 & LAST NOVEMBER
+      else if (page === 3) {
         card.innerHTML = `
-          ${renderHeader("CHAPTER 2 OF 7 • GURGAON DIARIES", 2)}
-          <h1>Cyber Hub, Sector 17 & Random Plans</h1>
-          <div class="narrative">
-            Eventually, 13-hour texts weren't enough—I just wanted to see you after office. We stepped out of the digital bubble for our breakthrough first real date at <strong>Cyber Hub</strong>.<br><br>
-            Soon, it turned into our favorite routine: spontaneous <em>"chal milte hain"</em> plans, Sector 14 and Sector 17 runs, McDonald's, pizza, pasta, and endless cravings. And then came November 2025—your birthday last year, right as things were becoming official.
+          ${renderTop("🥰", "Our Gurgaon Corners")}
+          <h1>Cyber Hub, Sector 17 & Last November</h1>
+          <div class="story-text">
+            <p>From that breakthrough first proper date at <strong>Cyber Hub</strong>, our whole world in Gurgaon slowly became about one thing: just finding an excuse to see each other after work.</p>
+            <p>Tap on each little memory below:</p>
           </div>
-          <span class="prompt-label">Quick memory test: What showed up at your place in Sector 17 for your birthday surprise last November?</span>
-          <div class="btn-list">
-            <button id="c2_right">A "Timeless Love" rose bouquet, a chocolate cake, a sparkle candle, and a birthday star topper.</button>
-            <button id="c2_wrong">A box of protein bars and a formal LinkedIn connection request.</button>
-          </div>
-          <div class="feedback-box" id="fb2"></div>
-          <div id="c2_next"></div>
-        `;
-
-        const fb2 = document.getElementById("fb2");
-
-        document.getElementById("c2_wrong").onclick = (e) => {
-          e.target.classList.add("wrong-choice");
-          shakeCard();
-          fb2.className = "feedback-box";
-          fb2.style.display = "block";
-          fb2.innerHTML = "Imagine if I actually sent a LinkedIn request for your birthday 😂 Try the real answer!";
-        };
-
-        document.getElementById("c2_right").onclick = (e) => {
-          e.target.classList.add("correct-choice");
-          fb2.className = "feedback-box green";
-          fb2.style.display = "block";
-          fb2.innerHTML = `You remember! ❤️ From coordinating that surprise delivery to Sector 17 last November to sitting here one full year later—look how far we've come.`;
-          if (!document.getElementById("c2NextBtn")) {
-            const nxt = document.createElement("button");
-            nxt.id = "c2NextBtn";
-            nxt.className = "btn-primary";
-            nxt.innerText = "Next Chapter: The Boss Battle ⚔️ →";
-            nxt.onclick = () => goNext("🍕 'Chal Milte Hain'");
-            document.getElementById("c2_next").appendChild(nxt);
-          }
-        };
-      }
-
-      // CHAPTER 3: BOSS BATTLE - WAFFLES VS KITKAT PANCAKES
-      else if (step === 3) {
-        card.innerHTML = `
-          ${renderHeader("CHAPTER 3 OF 7 • BOSS BATTLE ⚔️", 3)}
-          <h1>Waffles vs. KitKat Pancakes</h1>
-          <div class="narrative">
-            We agree on a lot of things, Bubu. We love food, we love random evening plans, and we love annoying each other.<br><br>
-            But there is one ongoing debate where you refuse to listen to logic, and I refuse to back down. Since it's your birthday at 12 AM, I am giving you a chance to officially settle this. Which dessert is superior?
-          </div>
-          <div class="btn-list">
-            <button id="waffleBtn">🧇 Waffles (Bubu's stubborn choice)</button>
-            <button id="pancakeBtn">🥞 KitKat Pancakes (Mannu's objectively correct choice)</button>
-          </div>
-          <div class="feedback-box" id="fb3"></div>
-          <div id="c3_next"></div>
-        `;
-
-        let waffleClicks = 0;
-        const fb3 = document.getElementById("fb3");
-        const waffleBtn = document.getElementById("waffleBtn");
-        const pancakeBtn = document.getElementById("pancakeBtn");
-
-        function unlockTruce() {
-          fb3.className = "feedback-box gold";
-          fb3.style.display = "block";
-          fb3.innerHTML = `<strong>🤝 OFFICIAL BIRTHDAY TRUCE DECLARED</strong><br>Fine! Whether you clicked KitKat Pancakes to make me happy or spammed Waffles out of pure stubbornness—I'll happily go eat both with you in Sector 14/17 anytime. (Even though KitKat Pancakes still win 🥞).`;
-          if (!document.getElementById("c3NextBtn")) {
-            const nxt = document.createElement("button");
-            nxt.id = "c3NextBtn";
-            nxt.className = "btn-primary";
-            nxt.innerText = "Next Chapter: Our Cinema Record →";
-            nxt.onclick = () => goNext("🥞 Pancake Truce");
-            document.getElementById("c3_next").appendChild(nxt);
-          }
-        }
-
-        waffleBtn.onclick = () => {
-          waffleClicks++;
-          shakeCard();
-          fb3.style.display = "block";
-          if (waffleClicks === 1) {
-            fb3.className = "feedback-box";
-            fb3.innerHTML = "⚠️ <strong>SYSTEM ERROR 404:</strong> Taste buds not calibrated. KitKat Pancakes are clearly undefeated. Try clicking the right answer below!";
-          } else if (waffleClicks === 2) {
-            waffleBtn.innerText = "🧇 Still Waffles! I am not backing down 😤";
-            fb3.className = "feedback-box";
-            fb3.innerHTML = "Look at this stubbornness! Even on your birthday at midnight you won't let me win this argument 😂 Tap once more if you really insist...";
-          } else {
-            unlockTruce();
-          }
-        };
-
-        pancakeBtn.onclick = () => {
-          pancakeBtn.classList.add("correct-choice");
-          unlockTruce();
-        };
-      }
-
-      // CHAPTER 4: THE MOVIE CURSE
-      else if (step === 4) {
-        card.innerHTML = `
-          ${renderHeader("CHAPTER 4 OF 7 • CINEMA DIAGNOSTICS", 4)}
-          <h1>The Unbroken Movie Curse 🍿</h1>
-          <div class="narrative">
-            Let's talk about our track record with watching movies together. We've earnestly sat down and started <strong>3 or 4 different movies</strong> together so far.<br><br>
-            Be honest: how many of those movies have we actually finished watching till the end credits?
-          </div>
-          <div class="btn-list">
-            <button id="c4_wrong">Every single one, in pin-drop silence, taking notes on the cinematography.</button>
-            <button id="c4_right">Literally ZERO (0/4). Every movie turned out to be terrible, so we ditched the movie and just talked the whole time.</button>
-          </div>
-          <div class="feedback-box" id="fb4"></div>
-          <div id="c4_next"></div>
-        `;
-
-        const fb4 = document.getElementById("fb4");
-
-        document.getElementById("c4_wrong").onclick = (e) => {
-          e.target.classList.add("wrong-choice");
-          shakeCard();
-          fb4.className = "feedback-box";
-          fb4.style.display = "block";
-          fb4.innerHTML = "Pin-drop silence? Us?! We can't stay quiet for 10 minutes together. Try again!";
-        };
-
-        document.getElementById("c4_right").onclick = (e) => {
-          e.target.classList.add("correct-choice");
-          fb4.className = "feedback-box green";
-          fb4.style.display = "block";
-          fb4.innerHTML = `<strong>0 out of 4!</strong> An undefeated streak. 😂 Every single time, the movie was terrible—and every single time, just talking to you, laughing, and being in our own world was 100x better than whatever was on the screen.`;
-          if (!document.getElementById("c4NextBtn")) {
-            const nxt = document.createElement("button");
-            nxt.id = "c4NextBtn";
-            nxt.className = "btn-primary";
-            nxt.innerText = "Next Chapter: Ego pe Ego →";
-            nxt.onclick = () => goNext("🎬 0/4 Movies");
-            document.getElementById("c4_next").appendChild(nxt);
-          }
-        };
-      }
-
-      // CHAPTER 5: EGO PE EGO MINI-GAME
-      else if (step === 5) {
-        card.innerHTML = `
-          ${renderHeader("CHAPTER 5 OF 7 • REAL LIFE MECHANICS", 5)}
-          <h1>Ego pe Ego: "Haan Bhai, Ab Nahi Baat Karni" 😂</h1>
-          <div class="narrative">
-            Our relationship hasn't been some fake, picture-perfect Instagram story. It has been <strong>real</strong>. It has been <em>us</em>—thoda pagal, thoda irritating, thoda dramatic, bohot saara pyaar, and a LOT of food.<br><br>
-            Including those fights where both of us are angry, full <em>ego pe ego</em>, and both of us are sitting there thinking: <strong>"Haan bhai, ab nahi baat karni."</strong> 😤<br><br>
-            Tap the button below to break the stubborn standoff and bring the Ego Meter down to 0%:
-          </div>
-          <div class="ego-widget">
-            <div class="ego-header">
-              <span id="egoLabel">STUBBORN EGO METER</span>
-              <span id="egoPct">100%</span>
-            </div>
-            <div class="ego-track">
-              <div class="ego-bar" id="egoBar"></div>
-            </div>
-          </div>
-          <button class="btn-primary" id="egoActionBtn">Tap 1: Send the first text anyway 💬</button>
-          <div class="feedback-box" id="fb5"></div>
-          <div id="c5_next"></div>
-        `;
-
-        let egoStage = 0;
-        const egoBar = document.getElementById("egoBar");
-        const egoPct = document.getElementById("egoPct");
-        const egoLabel = document.getElementById("egoLabel");
-        const egoBtn = document.getElementById("egoActionBtn");
-        const fb5 = document.getElementById("fb5");
-
-        egoBtn.onclick = () => {
-          egoStage++;
-          if (egoStage === 1) {
-            shakeCard();
-            egoBar.style.width = "65%";
-            egoPct.innerText = "65%";
-            fb5.style.display = "block";
-            fb5.innerHTML = "Still pretending to be mad with one-word replies... tap again!";
-            egoBtn.innerText = "Tap 2: Sit down & actually talk it out 🗣️";
-          } else if (egoStage === 2) {
-            shakeCard();
-            egoBar.style.width = "30%";
-            egoPct.innerText = "30%";
-            fb5.innerHTML = "The fake anger is cracking. Both of us want to laugh now... one more tap!";
-            egoBtn.innerText = "Tap 3: Hug it out, understand each other & order food 🍕❤️";
-          } else if (egoStage === 3) {
-            egoBar.style.width = "100%";
-            egoBar.style.background = "linear-gradient(90deg, #3dd68c, #ff4d7d)";
-            egoLabel.innerText = "EGO: 0% • PYAAR & UNDERSTANDING:";
-            egoLabel.style.color = "#3dd68c";
-            egoPct.innerText = "100%";
-            egoBtn.style.display = "none";
-
-            fb5.className = "feedback-box green";
-            fb5.innerHTML = `<strong>"And somehow, we always come back to each other."</strong><br>We talk, we sort things out, we understand each other a little better, and we continue. Being the person I want to fight with and then immediately talk to again—that's what makes our one year so beautiful. ❤️`;
-
-            const nxt = document.createElement("button");
-            nxt.className = "btn-primary";
-            nxt.innerText = "Next Chapter: Merging Worlds →";
-            nxt.onclick = () => goNext("❤️ Ego Melted");
-            document.getElementById("c5_next").appendChild(nxt);
-          }
-        };
-      }
-
-      // CHAPTER 6: MERGING WORLDS (3 TAP-TO-UNLOCK CARDS)
-      else if (step === 6) {
-        card.innerHTML = `
-          ${renderHeader("CHAPTER 6 OF 7 • OUR WORLD", 6)}
-          <h1>Highway Buses, Valentine's & Everyday Comfort</h1>
-          <div class="narrative">
-            Somewhere along the way, through all the little moments that became memories without us even realizing it, our worlds completely merged.<br><br>
-            <strong>Tap all 3 memory cards below</strong> to unlock the moments that turned you into my routine, my comfort, and my person:
-          </div>
-          <div class="memory-grid">
-            <div class="mem-card" id="mem1">
-              <div class="mem-card-title">
-                <span>🚌 The Highway Bus Journey</span>
-                <span class="lock-icon" id="lock1">🔒 Tap to unlock</span>
+          <div class="moment-list">
+            <div class="moment-item" id="m1">
+              <div class="moment-head">
+                <span>🍟 Sector 14 & Sector 17 Food Runs</span>
+                <span>Tap ✨</span>
               </div>
-              <div class="mem-card-body">
-                <strong>Kurukshetra & Karnal Bound:</strong> Taking that bus journey together out of Gurgaon toward our hometowns—stepping outside our office bubble and crossing paths in the real world.
+              <div class="moment-body">
+                McDonald's runs, pizzas, pastas, and spontaneous evening plans where the place didn't even matter—as long as I got to sit across from you.
               </div>
             </div>
-
-            <div class="mem-card" id="mem2">
-              <div class="mem-card-title">
-                <span>🎈 Valentine's Day & Your Words</span>
-                <span class="lock-icon" id="lock2">🔒 Tap to unlock</span>
+            <div class="moment-item" id="m2">
+              <div class="moment-head">
+                <span>🌹 November 19 Last Year (Sector 17)</span>
+                <span>Tap ✨</span>
               </div>
-              <div class="mem-card-body">
-                <strong>Decorations, Drinks & Heart:</strong> Setting up custom decorations, food, and drinks at your place—and reading the words you wrote for me that I still carry in my head every single day.
-              </div>
-            </div>
-
-            <div class="mem-card" id="mem3">
-              <div class="mem-card-title">
-                <span>🏸 Badminton & The Little Things</span>
-                <span class="lock-icon" id="lock3">🔒 Tap to unlock</span>
-              </div>
-              <div class="mem-card-body">
-                <strong>From ₹300 Splitwise Tabs to Everything:</strong> Whether we're settling ₹300 badminton splits, annoying each other after office, or sharing every random thought and craving—you took up so much space in my life and my heart.
+              <div class="moment-body">
+                Coordinating that "Timeless Love" rose bouquet, chocolate cake, and star topper to your place in Sector 17 when we were just starting out—and now here we are, a whole year deeper.
               </div>
             </div>
           </div>
-          <div id="c6_next"></div>
+          <div id="nav3"></div>
         `;
 
-        let unlockedCount = 0;
-        const seen = { 1: false, 2: false, 3: false };
-
-        [1, 2, 3].forEach(num => {
-          const el = document.getElementById(`mem${num}`);
-          el.onclick = () => {
-            if (!seen[num]) {
-              seen[num] = true;
-              unlockedCount++;
-              el.classList.add("unlocked");
-              document.getElementById(`lock${num}`).innerText = "✨ Unlocked";
-              if (unlockedCount === 3) {
-                const nxt = document.createElement("button");
-                nxt.className = "btn-primary";
-                nxt.innerText = "Unlock Your Midnight Birthday Letter 🎂❤️";
-                nxt.onclick = () => {
-                  launchCelebration();
-                  goNext("♾️ My Person");
-                };
-                document.getElementById("c6_next").appendChild(nxt);
+        let opened = 0;
+        const clicked = { m1: false, m2: false };
+        ["m1", "m2"].forEach(id => {
+          document.getElementById(id).onclick = function() {
+            this.classList.add("opened");
+            if (!clicked[id]) {
+              clicked[id] = true;
+              opened++;
+              setMood(id === "m1" ? "🍕" : "🥺", id === "m1" ? "Food Partners For Life" : "One Year Of Birthdays");
+              if (opened === 2 && !document.getElementById("n3")) {
+                const b = document.createElement("button");
+                b.id = "n3";
+                b.className = "next-btn";
+                b.innerText = "Turn the page →";
+                b.onclick = nextPage;
+                document.getElementById("nav3").appendChild(b);
               }
             }
           };
         });
       }
 
-      // CHAPTER 7: FINAL MIDNIGHT BIRTHDAY LETTER
-      else if (step === 7) {
+      // PAGE 4: THE MOVIE CURSE & DESSERT RIVALRY
+      else if (page === 4) {
         card.innerHTML = `
-          ${renderHeader("🎂 NOVEMBER 19 • 12:00 AM • HAPPY BIRTHDAY BUBU", 7)}
-          <h1>To My Favorite Person ❤️</h1>
-          <div class="letter-scroll">
-            <p class="letter-greeting">Happy Birthday, Bubu. ❤️</p>
-            <p>If someone had told me back in 2024, when we were just two colleagues at Amex, that you would become <em>this</em> important to me, I probably would have laughed too. Back then, I had no idea that those late-night Ludo games and 13-hour text marathons would turn into the best part of my life.</p>
-            <p>Looking back at this past year—from our first date at Cyber Hub, to hiding from people in the office (and getting caught anyway 😂), to last November's cake and roses in Sector 17, to that bus ride toward Kurukshetra and Karnal—it honestly blows my mind how naturally you became my person.</p>
-            <p>You became the person I look for in every room. The person I want to see right after office. The person I want to tell random things to, annoy for no reason, fight with in full <em>ego pe ego</em> mode (<em>"haan bhai, ab nahi baat karni"</em>), and then immediately come back to five minutes later because not talking to you isn't even an option.</p>
-            <p>What I love most about us is that it hasn't been some fake, picture-perfect setup. It has been real. Thoda pagal, thoda irritating, thoda dramatic, bohot saara pyaar, 0 finished movies out of 4, endless Waffles vs. KitKat Pancakes debates, and a LOT of pizza, pasta, and McDonald's.</p>
-            <p>You have become my routine, my comfort, my happiness, and my favorite part of every day. Thank you for every hug, every kiss, every <em>"take care,"</em> every time you stayed, every time you handled me, and every random <em>"chal milte hain"</em> plan that turned into a memory we'll never forget.</p>
-            <p>Today is all about you, Baby. I don't just want to celebrate the year we've had—I want to make a lifetime of memories with you. More trips, more birthdays, more late evenings, more laughing till our stomachs hurt, more stupid fights that end in hugs, and more of everything, together.</p>
-            <p><strong>Bas aise hi mere saath rehna, mera haath pakad ke. 🫶🏻</strong></p>
-            <p>Happy Birthday, Dhairya. I love you, Baby—more than I can ever put into words. ❤️</p>
-            <div class="letter-signoff">
-              Always yours,<br>Mannu ❤️
+          ${renderTop("🤨", "Unfinished Business")}
+          <h1>4 Bad Movies & The Pancake Debate</h1>
+          <div class="story-text">
+            <p>Two things about us still crack me up every time I think about them.</p>
+            <p>First: Our <strong>legendary movie curse</strong>. We have tried watching 3 or 4 movies together and haven't finished a single one—mostly because the movies were awful, and partly because talking to you is always way more entertaining than the screen. 🍿</p>
+            <p>Second: Our never-ending war between <strong>your Waffles</strong> and <strong>my KitKat Pancakes</strong>.</p>
+          </div>
+          <div class="reaction-group">
+            <button class="react-btn" id="r4_waffle">
+              <span>"It's my birthday, admit Waffles are better 🧇"</span>
+              <span>😤</span>
+            </button>
+            <button class="react-btn" id="r4_pancake">
+              <span>"Fine, KitKat Pancakes win tonight 🥞"</span>
+              <span>😌</span>
+            </button>
+          </div>
+          <div class="whisper-box" id="w4"></div>
+          <div id="nav4"></div>
+        `;
+
+        const show4 = (emoji, label, text, btn) => {
+          document.querySelectorAll(".react-btn").forEach(b => b.classList.remove("selected"));
+          btn.classList.add("selected");
+          setMood(emoji, label);
+          const w = document.getElementById("w4");
+          w.style.display = "block";
+          w.innerHTML = text;
+          if (!document.getElementById("n4")) {
+            const b = document.createElement("button");
+            b.id = "n4";
+            b.className = "next-btn";
+            b.innerText = "Keep reading →";
+            b.onclick = nextPage;
+            document.getElementById("nav4").appendChild(b);
+          }
+        };
+
+        document.getElementById("r4_waffle").onclick = function() {
+          show4("🙄", "Birthday Privilege Granted", "Look at you using the birthday card at 12 AM! 😂 Okay fine, for the next 24 hours, Waffles take the crown. Tomorrow we go back to debating.", this);
+        };
+        document.getElementById("r4_pancake").onclick = function() {
+          show4("🥳", "Miracles Do Happen", "Screenshot taken! 😂 Jokes aside, I'd happily order both with you any night of the week.", this);
+        };
+      }
+
+      // PAGE 5: WHEN WE CLASH & MELT BACK TOGETHER
+      else if (page === 5) {
+        card.innerHTML = `
+          ${renderTop("😤", "Two Stubborn Heads")}
+          <h1>Our Stubborn Silences (That Never Last)</h1>
+          <div class="story-text">
+            <p>You know what actually makes me love us even more? We aren't some scripted, fake couple pretending everything is smooth 24/7.</p>
+            <p>We have our moments where both of our tempers flare up, pride gets in the way, and we both sit there with folded arms acting like we’re never going to speak again. 😒</p>
+          </div>
+          <div class="reaction-group">
+            <button class="react-btn" id="r5_melt">
+              <span>Tap to see what happens 10 minutes later...</span>
+              <span>🥺</span>
+            </button>
+          </div>
+          <div class="whisper-box gold" id="w5"></div>
+          <div id="nav5"></div>
+        `;
+
+        document.getElementById("r5_melt").onclick = function() {
+          this.classList.add("selected");
+          setMood("🫠", "Zero Ability To Stay Mad");
+          const w = document.getElementById("w5");
+          w.style.display = "block";
+          w.innerHTML = `
+            Neither of us can actually stay away. Within minutes, the wall drops, we sit down, talk it through properly, understand each other a little deeper than before, and go right back to teasing each other.<br><br>
+            Even when I want to annoy you, you're still the exact same person I want to run back to immediately. ❤️
+          `;
+          if (!document.getElementById("n5")) {
+            const b = document.createElement("button");
+            b.id = "n5";
+            b.className = "next-btn";
+            b.innerText = "Turn the page →";
+            b.onclick = nextPage;
+            document.getElementById("nav5").appendChild(b);
+          }
+        };
+      }
+
+      // PAGE 6: KURUKSHETRA-KARNAL BUS, BADMINTON & VALENTINE'S
+      else if (page === 6) {
+        card.innerHTML = `
+          ${renderTop("🥹", "My Everyday Comfort")}
+          <h1>Highway Buses & Quiet Milestones</h1>
+          <div class="story-text">
+            <p>Whether it was taking that bus ride together out of Gurgaon toward <strong>Kurukshetra and Karnal</strong>, setting up decorations and drinks at your place on Valentine's, or settling ₹300 badminton Splitwise tabs—our lives quietly wove together.</p>
+            <p>And that letter you wrote for me on Valentine's Day? I never told you enough how much those words stayed with me. Knowing how deeply we chose each other changed everything for me.</p>
+          </div>
+          <button class="next-btn" id="n6">Read Your Birthday Letter 💌</button>
+        `;
+        document.getElementById("n6").onclick = () => {
+          launchHearts();
+          nextPage();
+        };
+      }
+
+      // PAGE 7: FINAL BIRTHDAY LETTER
+      else if (page === 7) {
+        card.innerHTML = `
+          ${renderTop("🥰", "Happy Birthday, Bubu ❤️")}
+          <h1>To My Favorite Person</h1>
+          <div class="letter-container">
+            <p><strong>Happy Birthday, Bubu. ❤️</strong></p>
+            <p>Looking at where we started—from pretending to be strangers at Amex, to getting jump-scared by Vishal Rana outside the Elan Mall theatre, to late-night Ludo and Cyber Hub dates—it still amazes me how naturally you became the center of my days.</p>
+            <p>You aren't just my girlfriend; you're my favorite habit. You're the face I scan every room for, the first person I want to tell random updates to, and the comfort I look forward to at the end of every chaotic workday.</p>
+            <p>Thank you for every warm hug, every little <em>"take care,"</em> every time you stayed by my side, every dramatic moment we laughed off, and every late-evening craving we turned into an adventure.</p>
+            <p>I don't just love the past year we've built—I'm excited for everything waiting ahead of us. More highway trips, more birthdays at midnight, more terrible movies we never finish, more Waffles and KitKat Pancakes, and walking through every season of life right beside you.</p>
+            <p><strong>I love you so much, Dhairya. Happy Birthday, Baby. 🫶🏻✨</strong></p>
+            <div class="signoff">
+              Forever yours,<br>Mannu ❤️
             </div>
           </div>
-          <div class="footer-actions">
-            <button class="btn-primary" id="moreConfettiBtn">🎉 Shower More Hearts</button>
-            <button id="replayBtn">🔄 Replay Story</button>
+          <div class="footer-row">
+            <button class="next-btn" id="moreHeartsBtn">💖 Shower Hearts</button>
+            <button class="react-btn" id="restartBtn" style="justify-content:center;">🔄 Read Again</button>
           </div>
         `;
 
-        document.getElementById("moreConfettiBtn").onclick = () => launchCelebration();
-        document.getElementById("replayBtn").onclick = () => {
-          step = 0;
-          renderStep();
+        document.getElementById("moreHeartsBtn").onclick = launchHearts;
+        document.getElementById("restartBtn").onclick = () => {
+          page = 0;
+          renderPage();
         };
       }
     }
 
-    renderStep();
+    renderPage();
   </script>
 </body>
 </html>
